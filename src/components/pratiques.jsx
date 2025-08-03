@@ -150,7 +150,7 @@ function Pratiques() {
                 {data
                   .filter(
                     (pratiques) =>
-                      Object.keys(pratiques.equipes)
+                      Object.keys(pratiques.equipes || {})
                         .filter(
                           (key) =>
                             pratiques.equipes[key].id == selEquipe ||
@@ -174,7 +174,7 @@ function Pratiques() {
                         )}
                       </TableCell>
                       <TableCell align="right">
-                        {Object.keys(pratiques.equipes).map((cleEq) => (
+                        {Object.keys(pratiques.equipes || {}).map((cleEq) => (
                           <span key={pratiques.equipes[cleEq].id}>
                             {pratiques.equipes[cleEq].Nom}
                             <br />
