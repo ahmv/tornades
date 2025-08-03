@@ -122,7 +122,7 @@ paddingTop:'1rem'
                       <CardActionArea className={isMobile?classes.rootMobile:classes.root}>
                         <CardMedia
                           className={isMobile?classes.mediaMobile:classes.media}
-                          image={ nouvelle.Visuel.length>0 ? ""+nouvelle.Visuel[0].url : logo }
+                          image={(Array.isArray(nouvelle.Visuel) ? nouvelle.Visuel[0]?.url : nouvelle.Visuel?.url) || logo}
                           title={nouvelle.Titre}
                         />
                         <CardContent

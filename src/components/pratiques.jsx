@@ -23,7 +23,16 @@ const useFetch = () => {
       let pratiques = await responsePratiques.json();
       // Normalize JSON to an array before sorting
       pratiques = Array.isArray(pratiques) ? pratiques : Object.values(pratiques);
-      pratiques.sort(function(a,b){if(a.Jour.localeCompare(b.Jour)==0){return ( a.Debut.localeCompare(b.Debut));}else{return (a.Jour.localeCompare(b.Jour));};});
+      pratiques.sort((a, b) => {
+        const jourA = a.Jour || '';
+        const jourB = b.Jour || '';
+        if (jourA.localeCompare(jourB) === 0) {
+          const debutA = a.Debut || '';
+          const debutB = b.Debut || '';
+          return debutA.localeCompare(debutB);
+        }
+        return jourA.localeCompare(jourB);
+      });
       
       const responseEquipes = await fetch("/api/equipes");
       const equipes = await responseEquipes.json();
