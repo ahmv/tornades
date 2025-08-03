@@ -131,8 +131,8 @@ paddingTop:'1rem'
                           {nouvelle.Titre}
                           </Typography>
                           <Typography variant="body2" color="textSecondary">
-                           {parse(marked(nouvelle.Description))}
-                          
+                           {parse(marked(nouvelle.Description || ''))}
+
                           </Typography>
                         </CardContent>
                       </CardActionArea>

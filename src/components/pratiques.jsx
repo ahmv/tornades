@@ -35,7 +35,8 @@ const useFetch = () => {
       });
       
       const responseEquipes = await fetch("/api/equipes");
-      const equipes = await responseEquipes.json();
+      let equipes = await responseEquipes.json();
+      equipes = Array.isArray(equipes) ? equipes : Object.values(equipes);
 
       setData(pratiques);
       setEquipes(equipes);
