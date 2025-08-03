@@ -20,7 +20,9 @@ const useFetch = () => {
   useEffect(() => {
     async function fetchData() {
       const responsePratiques = await fetch("/api/pratiques?_limit=100&_sort=Jour:DESC");
-      const pratiques = await responsePratiques.json();
+      let pratiques = await responsePratiques.json();
+      // Normalize JSON to an array before sorting
+      pratiques = Array.isArray(pratiques) ? pratiques : Object.values(pratiques);
       pratiques.sort(function(a,b){if(a.Jour.localeCompare(b.Jour)==0){return ( a.Debut.localeCompare(b.Debut));}else{return (a.Jour.localeCompare(b.Jour));};});
       
       const responseEquipes = await fetch("/api/equipes");
@@ -66,7 +68,7 @@ function Pratiques() {
     overflowX: 'auto', // Active une barre de défilement horizontale si nécessaire
   };
 
-  const { loadingP, loadingE, data, equipes, arenas } = useFetch();
+  const { loading, data, equipes } = useFetch();
   const selectRef = useRef(0);
   const [selEquipe, setSelEquipe] = useState(0);
   const [inclusAncien, setInclusAncien] = useState(false);
@@ -91,7 +93,7 @@ function Pratiques() {
 
   return (
     <Container>
-      {loadingP || loadingE ? (
+      {loading ? (
         <div>Loading...</div>
       ) : (
         <Paper style={paperStyle}>
