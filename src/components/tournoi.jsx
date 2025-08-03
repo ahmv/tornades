@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import TournoiALaRonde from './TournoiALaRonde';
-import { Container } from '@material-ui/core';
-import  Paper  from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { Container } from '@mui/material';
+import  Paper  from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import '../style/tournoi.css';
 
 function Tournoi() {

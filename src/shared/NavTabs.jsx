@@ -2,17 +2,17 @@ import React, { useEffect, Suspense } from 'react';
 import { withRouter } from 'react-router-dom';
 import '../style/NavTabs.css';
 import { Link } from "react-router-dom";
-import { makeStyles, useStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { fontFamily } from '@material-ui/system';
+import { makeStyles } from '@mui/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { fontFamily } from '@mui/system';
 import Accueil from '../components/Accueil'
 import Informations from '../components/Informations'
-import { useTheme } from '@material-ui/core/styles';
-import { withTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import { withTheme } from '@mui/styles';
 import 'typeface-indie-flower';
 //import url('https://fonts.googleapis.com/css?family=Indie+Flower&display=swap');
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
 import { useCookies } from "react-cookie";

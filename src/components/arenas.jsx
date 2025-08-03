@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../style/arenas.css';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { Container } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
-import LocationIcon from '@material-ui/icons/LocationOn';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Container } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Icon from '@mui/material/Icon';
+import LocationIcon from '@mui/icons-material/LocationOn';
 
 const useFetch = url => {
   const [data, setData] = useState(null);
