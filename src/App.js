@@ -4,19 +4,19 @@ import logo from './shared/tornades.png';
 import './App.css';
 import Helmet from "react-helmet";
 import NavTabs from './shared/NavTabs';
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 //import { Route, Switch} from 'react-router-dom';
 import SwitchRoutes from './components/SwitchRoutes';
-import { createMuiTheme, responsiveFontSizes ,ThemeProvider} from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes ,ThemeProvider} from '@mui/material/styles';
 import 'typeface-roboto';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Cookies from 'universal-cookie';
 
-//import red from '@material-ui/core/colors/red';
-//import yellow from '@material-ui/core/colors/yellow';
+//import red from '@mui/material/colors/red';
+//import yellow from '@mui/material/colors/yellow';
 
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: { main:  '#e00024'}, 
     secondary: { main: '#f5c71a' }, 
