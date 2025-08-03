@@ -88,6 +88,12 @@ const useFetch = url => {
       setSize({ width: window.innerWidth, height: window.innerHeight });
     };
     let {loading,data} = useFetch("/api/nouvelles");
+    const firstNews = data && data.length > 0 ? data[0] : null;
+    const imageUrl = firstNews
+      ? Array.isArray(firstNews.Visuel)
+        ? firstNews.Visuel[0]?.url || ''
+        : firstNews.Visuel?.url || ''
+      : '';
     return (
         <Container maxWidth={false} className={isMobile?"conteneur-accueil-mobile":"conteneur-accueil"}> 
          <Grid container spacing={5} >
@@ -130,27 +136,26 @@ La direction d’AHMV
  <Grid item xs={12} md={6} >
           </Grid>
           <Grid item xs={12} md={3} >
-          {loading ? <div>Loading...</div> : <Card style={carte} >
-
-                    
-                    <CardActionArea >
-                      <CardMedia
-                      
-                        image={""+data[0].Visuel.url}
-                        title={data[0].Titre}
-                      />
-                      <CardContent
-                     >
-                        <Typography gutterBottom variant="h5" component="h2">
-                        {data[0].Titre}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                        {parse(marked(data[0].Description))}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-
-                    </Card>}
+          {loading ? (
+            <div>Loading...</div>
+          ) : firstNews ? (
+            <Card style={carte}>
+              <CardActionArea>
+                <CardMedia
+                  image={imageUrl}
+                  title={firstNews.Titre || ''}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {firstNews.Titre}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {parse(marked(firstNews.Description || ''))}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ) : null}
  </Grid>
 
  </Grid>
