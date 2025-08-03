@@ -25,7 +25,9 @@ const useFetch = url => {
 
   async function fetchData() {
     const response = await fetch(url);
-    const json = await response.json();
+    let json = await response.json();
+    // Normalize JSON to an array before sorting
+    json = Array.isArray(json) ? json : Object.values(json);
     json.sort((a,b)=>{return ((b.created_at).localeCompare(a.created_at))});
     setData(json);
     setLoading(false)  }

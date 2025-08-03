@@ -32,7 +32,9 @@ const useFetch = url => {
 
   async function fetchData() {
     const response = await fetch(url);
-    const json = await response.json();
+    let json = await response.json();
+    // Ensure we can sort even if the API returns an object instead of an array
+    json = Array.isArray(json) ? json : Object.values(json);
     json.sort((a,b)=>{return ((b.created_at).localeCompare(a.created_at))});
 /*    console.log("yo "+response.headers);*/
     setData(json);
