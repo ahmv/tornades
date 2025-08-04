@@ -12,20 +12,22 @@ import Icon from '@mui/material/Icon';
 import LocationIcon from '@mui/icons-material/LocationOn';
 
 const useFetch = url => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   async function fetchData() {
     const response = await fetch(url);
-    const json = await response.json();
+    let json = await response.json();
+    json = Array.isArray(json) ? json : Object.values(json);
     setData(json);
-    setLoading(false)  }
+    setLoading(false);
+  }
 
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
 
-  return {loading,data};
+  return { loading, data };
 };
 
 function Arenas() {

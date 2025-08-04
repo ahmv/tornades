@@ -20,11 +20,23 @@ const useFetch = () => {
   useEffect(() => {
     async function fetchData() {
       const responsePratiques = await fetch("/api/pratiques?_limit=100&_sort=Jour:DESC");
-      const pratiques = await responsePratiques.json();
-      pratiques.sort(function(a,b){if(a.Jour.localeCompare(b.Jour)==0){return ( a.Debut.localeCompare(b.Debut));}else{return (a.Jour.localeCompare(b.Jour));};});
+      let pratiques = await responsePratiques.json();
+      // Normalize JSON to an array before sorting
+      pratiques = Array.isArray(pratiques) ? pratiques : Object.values(pratiques);
+      pratiques.sort((a, b) => {
+        const jourA = a.Jour || '';
+        const jourB = b.Jour || '';
+        if (jourA.localeCompare(jourB) === 0) {
+          const debutA = a.Debut || '';
+          const debutB = b.Debut || '';
+          return debutA.localeCompare(debutB);
+        }
+        return jourA.localeCompare(jourB);
+      });
       
       const responseEquipes = await fetch("/api/equipes");
-      const equipes = await responseEquipes.json();
+      let equipes = await responseEquipes.json();
+      equipes = Array.isArray(equipes) ? equipes : Object.values(equipes);
 
       setData(pratiques);
       setEquipes(equipes);
@@ -66,7 +78,7 @@ function Pratiques() {
     overflowX: 'auto', // Active une barre de défilement horizontale si nécessaire
   };
 
-  const { loadingP, loadingE, data, equipes, arenas } = useFetch();
+  const { loading, data, equipes } = useFetch();
   const selectRef = useRef(0);
   const [selEquipe, setSelEquipe] = useState(0);
   const [inclusAncien, setInclusAncien] = useState(false);
@@ -91,7 +103,7 @@ function Pratiques() {
 
   return (
     <Container>
-      {loadingP || loadingE ? (
+      {loading ? (
         <div>Loading...</div>
       ) : (
         <Paper style={paperStyle}>
@@ -138,7 +150,7 @@ function Pratiques() {
                 {data
                   .filter(
                     (pratiques) =>
-                      Object.keys(pratiques.equipes)
+                      Object.keys(pratiques.equipes || {})
                         .filter(
                           (key) =>
                             pratiques.equipes[key].id == selEquipe ||
@@ -162,7 +174,7 @@ function Pratiques() {
                         )}
                       </TableCell>
                       <TableCell align="right">
-                        {Object.keys(pratiques.equipes).map((cleEq) => (
+                        {Object.keys(pratiques.equipes || {}).map((cleEq) => (
                           <span key={pratiques.equipes[cleEq].id}>
                             {pratiques.equipes[cleEq].Nom}
                             <br />

@@ -32,8 +32,10 @@ const useFetch = url => {
 
   async function fetchData() {
     const response = await fetch(url);
-    const json = await response.json();
-    json.sort((a,b)=>{return ((b.created_at).localeCompare(a.created_at))});
+    let json = await response.json();
+    // Ensure we can sort even if the API returns an object instead of an array
+    json = Array.isArray(json) ? json : Object.values(json);
+    json.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
 /*    console.log("yo "+response.headers);*/
     setData(json);
    setLoading(false);  
@@ -86,6 +88,12 @@ const useFetch = url => {
       setSize({ width: window.innerWidth, height: window.innerHeight });
     };
     let {loading,data} = useFetch("/api/nouvelles");
+    const firstNews = data && data.length > 0 ? data[0] : null;
+    const imageUrl = firstNews
+      ? Array.isArray(firstNews.Visuel)
+        ? firstNews.Visuel[0]?.url || ''
+        : firstNews.Visuel?.url || ''
+      : '';
     return (
         <Container maxWidth={false} className={isMobile?"conteneur-accueil-mobile":"conteneur-accueil"}> 
          <Grid container spacing={5} >
@@ -128,27 +136,26 @@ La direction d’AHMV
  <Grid item xs={12} md={6} >
           </Grid>
           <Grid item xs={12} md={3} >
-          {loading ? <div>Loading...</div> : <Card style={carte} >
-
-                    
-                    <CardActionArea >
-                      <CardMedia
-                      
-                        image={""+data[0].Visuel.url}
-                        title={data[0].Titre}
-                      />
-                      <CardContent
-                     >
-                        <Typography gutterBottom variant="h5" component="h2">
-                        {data[0].Titre}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                        {parse(marked(data[0].Description))}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-
-                    </Card>}
+          {loading ? (
+            <div>Loading...</div>
+          ) : firstNews ? (
+            <Card style={carte}>
+              <CardActionArea>
+                <CardMedia
+                  image={imageUrl}
+                  title={firstNews.Titre || ''}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {firstNews.Titre}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {parse(marked(firstNews.Description || ''))}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ) : null}
  </Grid>
 
  </Grid>

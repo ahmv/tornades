@@ -128,9 +128,8 @@ function App() {
   }
 
   const bgStyle = {
-  
     backgroundColor:"#fffafa",
-    width:'min-content'
+    width:'100%'
   }
 
 
@@ -141,8 +140,7 @@ function App() {
     backgroundColor: theme.palette.primary.main,
     textColor: isMobile ? '' : '#000000',
     bottom: isMobile ? 0 : '',
-    width: 'auto', // Utilisez auto au lieu de 100vw
-    minWidth: 'max-content', // Étend la largeur au contenu
+    width: '100%',
     overflowX: 'auto', // Permet de scroller horizontalement si nécessaire
     zIndex: 1,
   };
@@ -178,7 +176,7 @@ color:'#000000',
           </div> 
 
         
-  <Box style={{ width: 'auto', minWidth: 'max-content', overflowX: 'auto' }} component="span">
+  <Box style={{ width: '100%', overflowX: 'auto' }} component="span">
     <SwitchRoutes
       style={bgStyle}
       isMobile={isMobile}

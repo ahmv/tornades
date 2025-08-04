@@ -12,22 +12,23 @@ import Typography from '@mui/material/Typography';
 
 const NavTabsWidth = 100;
 
-const useFetch = url => {
-  const [data, setData] = useState(null);
+const useFetch = () => {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-    async function fetchData() {
-      const response = await fetch("/api/equipes");
-      const json = await response.json();
-      setData(json);
-      setLoading(false);  
-    }
+  async function fetchData() {
+    const response = await fetch("/api/equipes");
+    let json = await response.json();
+    json = Array.isArray(json) ? json : Object.values(json);
+    setData(json);
+    setLoading(false);
+  }
 
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
 
-  return {loading,data};
+  return { loading, data };
 };
 
 function Matchs() {

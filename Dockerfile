@@ -9,13 +9,13 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 
 COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
-RUN npm install --save react-script react react-dom
+COPY .yarnrc.yml ./
+COPY .yarn ./.yarn
+RUN corepack enable && yarn install
 
 COPY ./ ./
 
 # start app
 #CMD ["next", "dev"]
 #CMD ["cd", "syncmon"]
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

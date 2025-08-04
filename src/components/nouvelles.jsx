@@ -25,8 +25,10 @@ const useFetch = url => {
 
   async function fetchData() {
     const response = await fetch(url);
-    const json = await response.json();
-    json.sort((a,b)=>{return ((b.created_at).localeCompare(a.created_at))});
+    let json = await response.json();
+    // Normalize JSON to an array before sorting
+    json = Array.isArray(json) ? json : Object.values(json);
+    json.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
     setData(json);
     setLoading(false)  }
 
@@ -120,7 +122,7 @@ paddingTop:'1rem'
                       <CardActionArea className={isMobile?classes.rootMobile:classes.root}>
                         <CardMedia
                           className={isMobile?classes.mediaMobile:classes.media}
-                          image={ nouvelle.Visuel.length>0 ? ""+nouvelle.Visuel[0].url : logo }
+                          image={(Array.isArray(nouvelle.Visuel) ? nouvelle.Visuel[0]?.url : nouvelle.Visuel?.url) || logo}
                           title={nouvelle.Titre}
                         />
                         <CardContent
@@ -129,8 +131,8 @@ paddingTop:'1rem'
                           {nouvelle.Titre}
                           </Typography>
                           <Typography variant="body2" color="textSecondary">
-                           {parse(marked(nouvelle.Description))}
-                          
+                           {parse(marked(nouvelle.Description || ''))}
+
                           </Typography>
                         </CardContent>
                       </CardActionArea>

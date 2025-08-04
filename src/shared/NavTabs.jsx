@@ -104,13 +104,13 @@ const NavTabs = ({ history, ...props }) => {
             onChange={(e) => setValue(e)}
             // variant="scrollable"
             //style={useStyles.styleTabs}
-          
+
             centered={isMobile ? false : true}
             variant={isMobile ? "scrollable" : "standard"}
             scrollButtons="auto"
             indicatorColor="secondary"//{theme.palette.secondary.main}
             textColor="secondary"//{theme.palette.primary.main}
-            
+            style={{ backgroundColor: theme.palette.primary.main, width: '100%' }}
         >
             <Tab  label={t('Accueil')} component={Link} to={ "/"} style={{ fontSize: '1.3rem' }} className={isMobile ? "mobileTab" : "tab"} />
             <Tab  label={t('Nouvelles')} component={Link} to={ "/nouvelles/"}  style={{ fontSize: '1.3rem' }}  className={isMobile ? "mobileTab" : "tab"} />
