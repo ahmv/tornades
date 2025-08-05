@@ -23,12 +23,14 @@ const useFetch = () => {
       let pratiques = await responsePratiques.json();
       // Normalize JSON to an array before sorting
       pratiques = Array.isArray(pratiques) ? pratiques : Object.values(pratiques);
+      // Remove any null/undefined entries before sorting
+      pratiques = pratiques.filter(Boolean);
       pratiques.sort((a, b) => {
-        const jourA = a.Jour || '';
-        const jourB = b.Jour || '';
+        const jourA = a?.Jour || '';
+        const jourB = b?.Jour || '';
         if (jourA.localeCompare(jourB) === 0) {
-          const debutA = a.Debut || '';
-          const debutB = b.Debut || '';
+          const debutA = a?.Debut || '';
+          const debutB = b?.Debut || '';
           return debutA.localeCompare(debutB);
         }
         return jourA.localeCompare(jourB);

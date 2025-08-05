@@ -20,6 +20,8 @@ const useFetch = () => {
     const response = await fetch("/api/equipes");
     let json = await response.json();
     json = Array.isArray(json) ? json : Object.values(json);
+    // Remove any null/undefined entries before setting state
+    json = json.filter(Boolean);
     setData(json);
     setLoading(false);
   }
@@ -80,19 +82,19 @@ function Matchs() {
 
             </TableHead>
             <TableBody>
-           
-             {  data.map(equipe => 
-              (
-                
-                equipe.PageMatchHM==null? null :
-                <TableRow key={equipe.id} >
-                  <TableCell component="th" scope="row">
-                    {equipe.id}
-                  </TableCell>
-                  <TableCell   onChange={()=>{fetch(equipe.PageMatchHM)}} align="right"><a href={equipe.PageMatchHM} target="_blank">{equipe.Nom}</a></TableCell>
-                </TableRow>
-                
-                  ))}
+
+             {  data
+                .filter(Boolean)
+                .map(equipe => (
+                  equipe?.PageMatchHM == null ? null : (
+                    <TableRow key={equipe.id} >
+                      <TableCell component="th" scope="row">
+                        {equipe.id}
+                      </TableCell>
+                      <TableCell onChange={()=>{fetch(equipe.PageMatchHM)}} align="right"><a href={equipe.PageMatchHM} target="_blank">{equipe.Nom}</a></TableCell>
+                    </TableRow>
+                  )
+                ))}
             </TableBody>
           </Table>
           </Paper>
