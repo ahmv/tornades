@@ -35,10 +35,12 @@ const useFetch = url => {
     let json = await response.json();
     // Ensure we can sort even if the API returns an object instead of an array
     json = Array.isArray(json) ? json : Object.values(json);
-    json.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+    // Remove any null/undefined entries and safely sort by creation date
+    json = json.filter(Boolean);
+    json.sort((a, b) => (b?.created_at || '').localeCompare(a?.created_at || ''));
 /*    console.log("yo "+response.headers);*/
     setData(json);
-   setLoading(false);  
+   setLoading(false);
   }
 
   useEffect(() => {
