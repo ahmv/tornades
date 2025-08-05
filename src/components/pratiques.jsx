@@ -39,6 +39,8 @@ const useFetch = () => {
       const responseEquipes = await fetch("/api/equipes");
       let equipes = await responseEquipes.json();
       equipes = Array.isArray(equipes) ? equipes : Object.values(equipes);
+      // Remove null or undefined team entries
+      equipes = equipes.filter(Boolean);
 
       setData(pratiques);
       setEquipes(equipes);
@@ -149,22 +151,23 @@ function Pratiques() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data
-                  .filter(
-                    (pratiques) =>
-                      Object.keys(pratiques.equipes || {})
-                        .filter(
-                          (key) =>
-                            pratiques.equipes[key].id == selEquipe ||
-                            selEquipe == 0
-                        )
-                        .filter(
-                          (key) =>
-                            new Date(pratiques.Jour) >= aujourdhui ||
-                            inclusAncien
-                        ).length > 0
-                  )
-                  .map((pratiques) => (
+                  {data
+                    .filter(
+                      (pratiques) =>
+                        Object.keys(pratiques.equipes || {})
+                          .filter((key) => pratiques.equipes[key])
+                          .filter(
+                            (key) =>
+                              pratiques.equipes[key].id == selEquipe ||
+                              selEquipe == 0
+                          )
+                          .filter(
+                            () =>
+                              new Date(pratiques.Jour) >= aujourdhui ||
+                              inclusAncien
+                          ).length > 0
+                    )
+                    .map((pratiques) => (
                     <TableRow key={pratiques.id}>
                       <TableCell align="right">
                         {joursSemaine[new Date(pratiques.Jour).getDay()]}
@@ -176,12 +179,14 @@ function Pratiques() {
                         )}
                       </TableCell>
                       <TableCell align="right">
-                        {Object.keys(pratiques.equipes || {}).map((cleEq) => (
-                          <span key={pratiques.equipes[cleEq].id}>
-                            {pratiques.equipes[cleEq].Nom}
-                            <br />
-                          </span>
-                        ))}
+                        {Object.keys(pratiques.equipes || {})
+                          .filter((cleEq) => pratiques.equipes[cleEq])
+                          .map((cleEq) => (
+                            <span key={pratiques.equipes[cleEq].id}>
+                              {pratiques.equipes[cleEq].Nom}
+                              <br />
+                            </span>
+                          ))}
                       </TableCell>
                       <TableCell align="right">
                         {pratiques.Debut.split(':')[0] +

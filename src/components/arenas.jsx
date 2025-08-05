@@ -19,6 +19,8 @@ const useFetch = url => {
     const response = await fetch(url);
     let json = await response.json();
     json = Array.isArray(json) ? json : Object.values(json);
+    // Remove any null or undefined entries to avoid runtime errors
+    json = json.filter(Boolean);
     setData(json);
     setLoading(false);
   }
@@ -55,19 +57,23 @@ function Arenas() {
                       </TableRow>
       
                     </TableHead>
-                    <TableBody>
-            
-                      {data.map(arenas => 
-                      (
-      
-                        <TableRow key={arenas.id} >
-                          <TableCell align="center"><a href={arenas.lienGoogle}><LocationIcon></LocationIcon></a></TableCell>
-                          <TableCell align="center">{arenas.Nom}</TableCell>
-                          <TableCell align="center">{arenas.Adresse}<br/>{arenas.telephone}</TableCell>
-                        </TableRow>
-                    
-                          ))}
-                    </TableBody>
+                      <TableBody>
+                        {data.filter(Boolean).map((arenas) => (
+                          <TableRow key={arenas.id}>
+                            <TableCell align="center">
+                              <a href={arenas.lienGoogle}>
+                                <LocationIcon></LocationIcon>
+                              </a>
+                            </TableCell>
+                            <TableCell align="center">{arenas.Nom}</TableCell>
+                            <TableCell align="center">
+                              {arenas.Adresse}
+                              <br />
+                              {arenas.telephone}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
                   </Table>
                 </Paper>
                 }
