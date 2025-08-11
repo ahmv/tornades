@@ -108,7 +108,7 @@ const useFetch = url => {
 
           
 
-          <Grid container spacing={5}>
+  <Grid container spacing={6} style={{ marginTop: '2rem' }}>
           <Grid item xs={12} md={3} >
           <Card style={carte} >
                       <CardActionArea >
@@ -158,10 +158,10 @@ La direction d’AHMV
               </CardActionArea>
             </Card>
           ) : null}
- </Grid>
+  </Grid>
 
- </Grid>
- <Grid container spacing={5}>
+  </Grid>
+  <Grid container spacing={6} style={{ marginTop: '2rem' }}>
           <Grid item xs={12} sm={6} md={3} lg={2}  xl={2} >
           <a href="https://alias-solution.com/contact/fr/ls41" target="_blank" rel="noopener noreferrer">
                       <CardMedia

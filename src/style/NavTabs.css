@@ -1,12 +1,18 @@
 
     .nav-container {
+        position: relative;
         display: flex;
+        justify-content: center;
         align-items: center;
+        padding-left: 80px;
     }
 
     .nav-logo {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
         height: 50px;
-        margin-right: 1rem;
     }
 
     .mobileTab {
