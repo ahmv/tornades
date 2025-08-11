@@ -1,215 +1,202 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { makeStyles } from '@mui/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import React, { useState, useEffect, useRef } from "react";
+import { makeStyles } from "@mui/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
-// Les jours de la semaine pour le tableau
-const joursSemaine = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+const joursSemaine = [
+  "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
+];
 
 const useFetch = () => {
-  const [data, setData] = useState([]);
-  const [equipes, setEquipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pratiques, setPratiques] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const responsePratiques = await fetch("/api/pratiques?_limit=100&_sort=Jour:DESC");
-      let pratiques = await responsePratiques.json();
-      // Normalize JSON to an array before sorting
-      pratiques = Array.isArray(pratiques) ? pratiques : Object.values(pratiques);
-      // Remove any null/undefined entries before sorting
-      pratiques = pratiques.filter(Boolean);
-      pratiques.sort((a, b) => {
-        const jourA = a?.Jour || '';
-        const jourB = b?.Jour || '';
-        if (jourA.localeCompare(jourB) === 0) {
-          const debutA = a?.Debut || '';
-          const debutB = b?.Debut || '';
-          return debutA.localeCompare(debutB);
-        }
-        return jourA.localeCompare(jourB);
-      });
-      
-      const responseEquipes = await fetch("/api/equipes");
-      let equipes = await responseEquipes.json();
-      equipes = Array.isArray(equipes) ? equipes : Object.values(equipes);
-      // Remove null or undefined team entries
-      equipes = equipes.filter(Boolean);
+      try {
+        const query = `
+          query {
+            pratiques(pagination: { pageSize: 100 }, sort: "Jour:desc") {
+              documentId
+              Debut
+              Fin
+              Jour
+              arena {
+                documentId
+                Nom
+              }
+              equipes {
+                documentId
+                Nom
+              }
+            }
+          }
+        `;
 
-      setData(pratiques);
-      setEquipes(equipes);
-      setLoading(false); // Le chargement est terminé
+        const response = await fetch("/graphql", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+        });
+
+        const json = await response.json();
+
+        if (json.errors) {
+          console.error(json.errors);
+          setError("Erreur lors du chargement des données");
+        } else {
+          setPratiques(json.data.pratiques || []);
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Impossible de charger les données");
+      } finally {
+        setLoading(false);
+      }
     }
+
     fetchData();
   }, []);
 
-  return { loading, data, equipes };
+  return { loading, pratiques, error };
 };
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
-    margin: 'auto',
-    maxWidth: '100%',
-    overflowX: 'auto',
-    backgroundColor: theme.palette.background.paper,
+    margin: "auto",
+    maxWidth: "100%",
+    overflowX: "auto",
+    backgroundColor: theme.palette.background.paper
   },
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%',
-    padding: '1rem',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
+    padding: "1rem"
   },
   table: {
-    minWidth: 650,
-  },
+    minWidth: 650
+  }
 }));
 
 function Pratiques() {
-
-  const paperStyle = {
-    paddingTop: '1rem',
-    width: 'auto', // Laisse la largeur se calculer automatiquement
-    minWidth: 'max-content', // Adapte la largeur au contenu, même s'il dépasse l'écran
-    paddingBottom: '4rem', // Assure un espace en bas pour le footer
-    overflowX: 'auto', // Active une barre de défilement horizontale si nécessaire
-  };
-
-  const { loading, data, equipes } = useFetch();
+  const classes = useStyles();
+  const { loading, pratiques, error } = useFetch();
   const selectRef = useRef(0);
   const [selEquipe, setSelEquipe] = useState(0);
   const [inclusAncien, setInclusAncien] = useState(false);
 
-  const options = {
-    hour12 : false,
-    hour:  "2-digit",
-    minute: "2-digit"
-  }
-  
-  const optionsDate = {
-    hour12 : false,
-  }
-  
-  var heure = new Date().toLocaleTimeString("en-US",options);
-  var  maintenant= new Date();
-  var aujourdhui =maintenant;
-  aujourdhui.setHours(0);
-  aujourdhui.setMinutes(0);
-  aujourdhui.setSeconds(0);
-  aujourdhui.setMilliseconds(0);
+  const optionsDate = { hour12: false };
+
+  const maintenant = new Date();
+  const aujourdhui = new Date(
+    maintenant.getFullYear(),
+    maintenant.getMonth(),
+    maintenant.getDate()
+  );
+
+  // Extraire toutes les équipes uniques
+  const equipes = Array.from(
+    new Map(
+      pratiques
+        .flatMap((p) => p.equipes || [])
+        .map((eq) => [eq.documentId, eq])
+    ).values()
+  );
+
+  if (loading) return <div>Chargement...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <Container>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <Paper style={paperStyle}>
-          <Container>
-            <Typography variant="h2">Pratiques</Typography>
-            <span>Choisir votre équipe:</span>
-            <select
-              ref={selectRef}
-              selected
-              onChange={() => {
-                setSelEquipe(selectRef.current.value);
-              }}
-            >
-              <option key={0} value={0}>
-                Toutes
-              </option>
-              {equipes.map((equipe) => (
-                <option key={equipe.id} value={equipe.id}>
-                  {equipe.Nom}
-                </option>
-              ))}
-            </select>
-            <br />
-            <label>
-              <input
-                type="checkbox"
-                defaultChecked={false}
-                onClick={() => setInclusAncien(!inclusAncien)}
-              />{' '}
-              Afficher les anciennes pratiques
-            </label>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="right">Jour</TableCell>
-                  <TableCell align="right">Date</TableCell>
-                  <TableCell align="right">Équipes</TableCell>
-                  <TableCell align="right">Début</TableCell>
-                  <TableCell align="right">Fin</TableCell>
-                  <TableCell align="right">Aréna</TableCell>
+      <Paper className={classes.paper}>
+        <Typography variant="h2">Pratiques</Typography>
+        <span>Choisir votre équipe:</span>
+        <select
+          ref={selectRef}
+          onChange={() => setSelEquipe(selectRef.current.value)}
+        >
+          <option key={0} value={0}>Toutes</option>
+          {equipes.map((equipe) => (
+            <option key={equipe.documentId} value={equipe.documentId}>
+              {equipe.Nom}
+            </option>
+          ))}
+        </select>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            defaultChecked={false}
+            onClick={() => setInclusAncien(!inclusAncien)}
+          />{" "}
+          Afficher les anciennes pratiques
+        </label>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell align="right">Jour</TableCell>
+              <TableCell align="right">Date</TableCell>
+              <TableCell align="right">Équipes</TableCell>
+              <TableCell align="right">Début</TableCell>
+              <TableCell align="right">Fin</TableCell>
+              <TableCell align="right">Aréna</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {pratiques
+              .filter((pratique) => {
+                const matchEquipe =
+                  selEquipe === "0" || selEquipe === 0 || // Option toutes
+                  (pratique.equipes || []).some(
+                    (eq) => eq.documentId === selEquipe
+                  );
+                const matchDate =
+                  new Date(pratique.Jour) >= aujourdhui || inclusAncien;
+                return matchEquipe && matchDate;
+              })
+              .map((pratique) => (
+                <TableRow key={pratique.documentId}>
+                  <TableCell align="right">
+                    {joursSemaine[new Date(pratique.Jour).getDay()]}
+                  </TableCell>
+                  <TableCell align="right">
+                    {new Date(pratique.Jour).toLocaleDateString(
+                      "fr-CA",
+                      optionsDate
+                    )}
+                  </TableCell>
+                  <TableCell align="right">
+                    {(pratique.equipes || []).map((eq) => (
+                      <span key={eq.documentId}>
+                        {eq.Nom}
+                        <br />
+                      </span>
+                    ))}
+                  </TableCell>
+                  <TableCell align="right">
+                    {pratique.Debut?.slice(0, 5)}
+                  </TableCell>
+                  <TableCell align="right">
+                    {pratique.Fin?.slice(0, 5)}
+                  </TableCell>
+                  <TableCell align="right">
+                    {pratique.arena ? pratique.arena.Nom : "---"}
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                  {data
-                    .filter(
-                      (pratiques) =>
-                        Object.keys(pratiques.equipes || {})
-                          .filter((key) => pratiques.equipes[key])
-                          .filter(
-                            (key) =>
-                              pratiques.equipes[key].id == selEquipe ||
-                              selEquipe == 0
-                          )
-                          .filter(
-                            () =>
-                              new Date(pratiques.Jour) >= aujourdhui ||
-                              inclusAncien
-                          ).length > 0
-                    )
-                    .map((pratiques) => (
-                    <TableRow key={pratiques.id}>
-                      <TableCell align="right">
-                        {joursSemaine[new Date(pratiques.Jour).getDay()]}
-                      </TableCell>
-                      <TableCell align="right">
-                        {new Date(pratiques.Jour).toLocaleDateString(
-                          'fr-CA',
-                          optionsDate
-                        )}
-                      </TableCell>
-                      <TableCell align="right">
-                        {Object.keys(pratiques.equipes || {})
-                          .filter((cleEq) => pratiques.equipes[cleEq])
-                          .map((cleEq) => (
-                            <span key={pratiques.equipes[cleEq].id}>
-                              {pratiques.equipes[cleEq].Nom}
-                              <br />
-                            </span>
-                          ))}
-                      </TableCell>
-                      <TableCell align="right">
-                        {pratiques.Debut.split(':')[0] +
-                          ':' +
-                          pratiques.Debut.split(':')[1]}
-                      </TableCell>
-                      <TableCell align="right">
-                        {pratiques.Fin.split(':')[0] +
-                          ':' +
-                          pratiques.Fin.split(':')[1]}
-                      </TableCell>
-                      <TableCell align="right">
-                        {pratiques.arena == null
-                          ? '---'
-                          : pratiques.arena.Nom}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </Container>
-        </Paper>
-      )}
+              ))}
+          </TableBody>
+        </Table>
+      </Paper>
     </Container>
   );
 }
