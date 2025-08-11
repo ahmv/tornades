@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, Suspense } from 'react';
 //import { useForm } from "react-hook-form";
-import logo from './shared/tornades.png';
 import './App.css';
 import Helmet from "react-helmet";
 import NavTabs from './shared/NavTabs';
@@ -164,8 +163,6 @@ color:'#000000',
       
         <Helmet title="Tornades AHMV" />
         <ThemeProvider  theme={theme}>
-      <img className={!isMobile?'logo-tornades':'logo-tornades-mobile'} src={logo}/>
-       
        {/*<Typography variant="h1" style={styleTitre}>Association du Hockey Mineur de Villeray</Typography>*/}
  
   <Box style={styleTitre}> <Typography variant="h2">Association de Hockey mineur de Villeray</Typography></Box>

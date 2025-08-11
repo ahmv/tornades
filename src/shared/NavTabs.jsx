@@ -5,9 +5,6 @@ import { Link } from "react-router-dom";
 import { makeStyles } from '@mui/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { fontFamily } from '@mui/system';
-import Accueil from '../components/Accueil'
-import Informations from '../components/Informations'
 import { useTheme } from '@mui/material/styles';
 import { withTheme } from '@mui/styles';
 import 'typeface-indie-flower';
@@ -16,19 +13,12 @@ import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
 import { useCookies } from "react-cookie";
-
-
-    //const styleTabs={
-     //   backgroundColor:'#000000',
-      //  color:theme.palette.primary.main,
-
-    //}//
+import logo from './tornades.png';
 
 const tabProps={textColor:"primary"}
 
 const NavTabs = ({ history, ...props }) => {
     const { isMobile } = props;
-    //const classes = useStyles(props.theme);
     const [value, setValue] = React.useState(0);
     const [langue, setLangue] = React.useState('fr');
     const { t, i18n } = useTranslation('NavTabs');
@@ -51,14 +41,14 @@ const NavTabs = ({ history, ...props }) => {
             color:theme.palette.primary.main,
         },
         media: {
-     
+
         },
 
       });
 
     function SetTabsValue() {
         const path = history.location.pathname.substring(1, history.location.pathname.indexOf('/', 1));
-        
+
         switch (path) {
             case 'accueil':
                 setValue(0);
@@ -68,7 +58,7 @@ const NavTabs = ({ history, ...props }) => {
                 break;
             case 'inscription':
                     setValue(2);
-                    break;    
+                    break;
             case 'pratiques':
                 setValue(3);
                 break;
@@ -94,11 +84,12 @@ const NavTabs = ({ history, ...props }) => {
     return (
         /*<ThemeProvider theme={theme}>*/
         <Suspense fallback={<div>Loading</div>}>
-        <div>
+        <div className="nav-container">
+            <img src={logo} className="nav-logo" alt="Tornades logo" />
              <Typography variant="button" >
 
         <Tabs
-            className={isMobile ? "": ""}
+            className={isMobile ? "" : ""}
             orientation={isMobile ? "horizontal" : "horizontal"}
             value={value}
             onChange={(e) => setValue(e)}
@@ -110,12 +101,12 @@ const NavTabs = ({ history, ...props }) => {
             scrollButtons="auto"
             indicatorColor="secondary"//{theme.palette.secondary.main}
             textColor="secondary"//{theme.palette.primary.main}
-            style={{ backgroundColor: theme.palette.primary.main, width: '100%' }}
+            style={{ backgroundColor: theme.palette.primary.main, flexGrow: 1 }}
         >
             <Tab  label={t('Accueil')} component={Link} to={ "/"} style={{ fontSize: '1.3rem' }} className={isMobile ? "mobileTab" : "tab"} />
             <Tab  label={t('Nouvelles')} component={Link} to={ "/nouvelles/"}  style={{ fontSize: '1.3rem' }}  className={isMobile ? "mobileTab" : "tab"} />
             <Tab label={t('Inscription')} component={Link} to="/inscription/" style={{ fontSize: '1.3rem' }}  className={isMobile ? "mobileTab" : "tab"}/>
-            <Tab label={t('Pratiques')} component={Link} to={"/pratiques/"}  style={{ fontSize: '1.3rem' }} className={isMobile ? "mobileTab" : "tab"} />
+            <Tab label={t('Pratiques')} component={Link} to={"/pratiques/"}  style={{ fontSize: '1.3rem' }} className={isMobile? "mobileTab" : "tab"} />
             <Tab label={t('Matchs')} component={Link} to="/matchs/"  style={{ fontSize: '1.3rem' }} className={isMobile ? "mobileTab" : "tab"} />
             <Tab label={t('Tournoi')} component={Link} to="/tournoi/"  style={{ fontSize: '1.3rem' }} className={isMobile ? "mobileTab" : "tab"} />
             <Tab label={t('Arenas')} component={Link} to="/arenas/"  style={{ fontSize: '1.3rem' }} className={isMobile ? "mobileTab" : "tab"} />
@@ -123,7 +114,7 @@ const NavTabs = ({ history, ...props }) => {
             <Tab label={cookies.user} component={Link} to="/connexion/" style={{ fontSize: '1.3rem' }} className={isMobile ? "mobileTab" : "tab"} />
 
         </Tabs>
-       
+
         </Typography>
         </div>
         </Suspense>
@@ -131,3 +122,4 @@ const NavTabs = ({ history, ...props }) => {
 }
 
 export default  withTheme(withRouter(NavTabs))
+
