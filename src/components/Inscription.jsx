@@ -144,7 +144,7 @@ return (
       <Grid container spacing={8}>
         <Grid container item xs={12} spacing={2}>
         <Grid item xs={12} >
-        <h4>  Les inscriptions 2024-2025 sont ouvertes! </h4>
+        <h4>  Les inscriptions 2025-2026 sont ouvertes! </h4>
             <Card >
 
               <CardActionArea>
@@ -278,32 +278,37 @@ return (
 
                     <ListItem>
                       <ListItemText
-                        primary="Timbits M7: 99$" secondary="2018-2019-2020-2021"
+                        primary="Timbits M7: 190$" secondary="2019-2020-2021-2022"
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary="M9 (Novice): 325$" secondary="2016-2017"
+                        primary="M9 : 380$" secondary="2017-2018"
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary="M11 (Atome): 325$" secondary="2014-2015"
+                        primary="M11 : 450$" secondary="2015-2016"
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary="M13 (Peewee): 325$" secondary="2012-2013"
+                        primary="M13 : 450$" secondary="2013-2014"
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary="M15 (Bantam): 325$" secondary="2010-2011"
+                        primary="M15 : 475$" secondary="2011-2012"
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary="M18 (Midget): 375$" secondary="2007-2008-2009"
+                        primary="M18 : 525$" secondary="2008-2009-2010"
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Junior: 590$" secondary="2004-2005-2006-2007"
                       />
                     </ListItem>
 
