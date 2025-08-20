@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { sortTeams } from "../shared/teamUtils";
 
 const joursSemaine = [
   "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
@@ -105,12 +106,14 @@ function Pratiques() {
   );
 
   // Extraire toutes les équipes uniques
-  const equipes = Array.from(
-    new Map(
-      pratiques
-        .flatMap((p) => p.equipes || [])
-        .map((eq) => [eq.documentId, eq])
-    ).values()
+  const equipes = sortTeams(
+    Array.from(
+      new Map(
+        pratiques
+          .flatMap((p) => p.equipes || [])
+          .map((eq) => [eq.documentId, eq])
+      ).values()
+    )
   );
 
   if (loading) return <div>Chargement...</div>;
