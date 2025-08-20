@@ -145,17 +145,19 @@ return (
         <Grid container item xs={12} spacing={2}>
         <Grid item xs={12} >
         <h4>  Les inscriptions 2025-2026 sont ouvertes! </h4>
+        <Link style={{ textDecoration: 'none' }} href="https://page.hockeycanada.ca/page/hc/hq/hockey-quebec-region-montreal/ahm-de-villeray/participant">
             <Card >
 
               <CardActionArea>
 
                 <CardContent>
                   <div>{"Les inscriptions se font directement sur le site de Hockey Canada. Cliquez sur ce lien pour aller directement au bon endroit:"}</div>
-                  <Link href="https://page.hockeycanada.ca/page/hc/hq/hockey-quebec-region-montreal/ahm-de-villeray/participant"><h3 style={titreSection}> Page d'inscription</h3></Link>
+                  <h3 style={titreSection}> Page d'inscription</h3>
 
                 </CardContent>
               </CardActionArea>
             </Card >
+            </Link>
             
             
           </Grid>
