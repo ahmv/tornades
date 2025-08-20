@@ -152,49 +152,58 @@ function Pratiques() {
               <TableCell align="right">Aréna</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {pratiques
-              .filter((pratique) => {
-                const matchEquipe =
-                  selEquipe === "0" || selEquipe === 0 || // Option toutes
-                  (pratique.equipes || []).some(
-                    (eq) => eq.documentId === selEquipe
-                  );
-                const matchDate =
-                  new Date(pratique.Jour) >= aujourdhui || inclusAncien;
-                return matchEquipe && matchDate;
-              })
-              .map((pratique) => (
-                <TableRow key={pratique.documentId}>
-                  <TableCell align="right">
-                    {joursSemaine[new Date(pratique.Jour).getDay()]}
-                  </TableCell>
-                  <TableCell align="right">
-                    {new Date(pratique.Jour).toLocaleDateString(
-                      "fr-CA",
-                      optionsDate
-                    )}
-                  </TableCell>
-                  <TableCell align="right">
-                    {(pratique.equipes || []).map((eq) => (
-                      <span key={eq.documentId}>
-                        {eq.Nom}
-                        <br />
-                      </span>
-                    ))}
-                  </TableCell>
-                  <TableCell align="right">
-                    {pratique.Debut?.slice(0, 5)}
-                  </TableCell>
-                  <TableCell align="right">
-                    {pratique.Fin?.slice(0, 5)}
-                  </TableCell>
-                  <TableCell align="right">
-                    {pratique.arena ? pratique.arena.Nom : "---"}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
+<TableBody>
+  {pratiques
+    .filter((pratique) => {
+      const matchEquipe =
+        selEquipe === "0" || selEquipe === 0 ||
+        (pratique.equipes || []).some(
+          (eq) => eq.documentId === selEquipe
+        );
+
+      const now = new Date();
+      const pratiqueFin = new Date(`${pratique.Jour}T${pratique.Fin || "00:00"}`);
+      const matchDate = inclusAncien || pratiqueFin >= now;
+
+      return matchEquipe && matchDate;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(`${a.Jour}T${a.Debut || "00:00"}`);
+      const dateB = new Date(`${b.Jour}T${b.Debut || "00:00"}`);
+      return dateA - dateB;
+    })
+    .map((pratique) => (
+      <TableRow key={pratique.documentId}>
+        <TableCell align="right">
+          {joursSemaine[new Date(pratique.Jour).getDay()]}
+        </TableCell>
+        <TableCell align="right">
+          {new Date(pratique.Jour).toLocaleDateString(
+            "fr-CA",
+            optionsDate
+          )}
+        </TableCell>
+        <TableCell align="right">
+          {(pratique.equipes || []).map((eq) => (
+            <span key={eq.documentId}>
+              {eq.Nom}
+              <br />
+            </span>
+          ))}
+        </TableCell>
+        <TableCell align="right">
+          {pratique.Debut?.slice(0, 5)}
+        </TableCell>
+        <TableCell align="right">
+          {pratique.Fin?.slice(0, 5)}
+        </TableCell>
+        <TableCell align="right">
+          {pratique.arena ? pratique.arena.Nom : "---"}
+        </TableCell>
+      </TableRow>
+    ))}
+</TableBody>
+
         </Table>
       </Paper>
     </Container>
