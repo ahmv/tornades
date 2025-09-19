@@ -24,7 +24,7 @@ const useFetch = () => {
       try {
         const query = `
           query {
-            pratiques(pagination: { pageSize: 100 }, sort: ["Jour:asc", "Debut:asc"]) {
+            pratiques(pagination: { pageSize: 200 }, sort: ["Jour:asc", "Debut:asc"]) {
               documentId
               Debut
               Fin
