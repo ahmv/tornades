@@ -170,7 +170,7 @@ function Pratiques() {
                   .sort((a, b) => {
                     const dateA = new Date(a.Jour + "T" + a.Debut);
                     const dateB = new Date(b.Jour + "T" + b.Debut);
-                    return dateA - dateB;
+                    return dateB - dateA;
                   })
                   .map((pratique) => (
                     <TableRow key={pratique.documentId}>
