@@ -44,7 +44,7 @@ function Tournoi() {
 <Paper style={stylePaper}>
            <Typography variant="h2">Tournoi M13 / M15 2025 d'AHMV</Typography>
 <p>L'édition 2025 de notre tournoi M13 / M15 est en cours de préparation.
-Elle se déroulera du 24 au 30 novembre 2025 pour le M13 et du 1er au 7 décembre 2025 pour le M15</p>
+Elle se déroulera du 24 au 30 novembre 2025 pour le M15 et du 1er au 7 décembre 2025 pour le M13</p>
 
 
 <p>Nous aurons cette année M13 A-B-C et M15 A-B-C. Nouveauté! Le tournoi se tiendra à l'aréna St-Michel, le plus bel aréna à Montréal (à égalité avec le Centre Bell)</p>
