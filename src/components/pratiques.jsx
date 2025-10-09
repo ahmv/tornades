@@ -24,7 +24,7 @@ const useFetch = () => {
       try {
         const query = `
           query {
-            pratiques(pagination: { pageSize: 100 }, sort: ["Jour:desc", "Debut:desc"]) {
+            pratiques(pagination: { pageSize: 200 }, sort: ["Jour:desc", "Debut:desc"]) {
               documentId
               Debut
               Fin
@@ -170,6 +170,9 @@ function Pratiques() {
                   .sort((a, b) => {
                     const dateA = new Date(a.Jour + "T" + a.Debut);
                     const dateB = new Date(b.Jour + "T" + b.Debut);
+                    console.log("dateA", a.Jour, a.Debut, new Date(a.Jour + "T" + a.Debut));
+                    console.log("dateB", b.Jour, b.Debut, new Date(b.Jour + "T" + b.Debut));
+
                     return dateA - dateB;
                   })
                   .map((pratique) => (
