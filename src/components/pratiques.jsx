@@ -168,13 +168,18 @@ function Pratiques() {
                     return matchEquipe && matchDate;
                   })
                   .sort((a, b) => {
-                    const dateA = new Date(a.Jour + "T" + a.Debut);
-                    const dateB = new Date(b.Jour + "T" + b.Debut);
-                    console.log("dateA", a.Jour, a.Debut, new Date(a.Jour + "T" + a.Debut));
-                    console.log("dateB", b.Jour, b.Debut, new Date(b.Jour + "T" + b.Debut));
+                      const dateA = new Date(a.Jour);
+                      const dateB = new Date(b.Jour);
 
-                    return dateA - dateB;
-                  })
+                      // Ajouter l'heure de début (Debut est "HH:mm:ss.000")
+                      const [hA, mA] = a.Debut ? a.Debut.split(":") : [0, 0];
+                      const [hB, mB] = b.Debut ? b.Debut.split(":") : [0, 0];
+
+                      dateA.setHours(hA, mA);
+                      dateB.setHours(hB, mB);
+
+                      return dateA - dateB; // tri croissant : du plus proche au plus loin
+                    })
                   .map((pratique) => (
                     <TableRow key={pratique.documentId}>
                   <TableCell align="right">
