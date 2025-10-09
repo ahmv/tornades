@@ -156,19 +156,24 @@ function Pratiques() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {pratiques
-              .filter((pratique) => {
-                const matchEquipe =
-                  selEquipe === "0" || selEquipe === 0 || // Option toutes
-                  (pratique.equipes || []).some(
-                    (eq) => eq.documentId === selEquipe
-                  );
-                const matchDate =
-                  new Date(pratique.Jour) >= aujourdhui || inclusAncien;
-                return matchEquipe && matchDate;
-              })
-              .map((pratique) => (
-                <TableRow key={pratique.documentId}>
+                {pratiques
+                  .filter((pratique) => {
+                    const matchEquipe =
+                      selEquipe === "0" || selEquipe === 0 || // Option toutes
+                      (pratique.equipes || []).some(
+                        (eq) => eq.documentId === selEquipe
+                      );
+                    const matchDate =
+                      new Date(pratique.Jour) >= aujourdhui || inclusAncien;
+                    return matchEquipe && matchDate;
+                  })
+                  .sort((a, b) => {
+                    const dateA = new Date(a.Jour + "T" + a.Debut);
+                    const dateB = new Date(b.Jour + "T" + b.Debut);
+                    return dateA - dateB;
+                  })
+                  .map((pratique) => (
+                    <TableRow key={pratique.documentId}>
                   <TableCell align="right">
                     {joursSemaine[new Date(pratique.Jour).getDay()]}
                   </TableCell>
