@@ -145,7 +145,7 @@ return (
         <Grid container item xs={12} spacing={2}>
         <Grid item xs={12} >
         <h4>  Les inscriptions 2025-2026 sont ouvertes! </h4>
-        <Link style={{ textDecoration: 'none' }} href="https://page.hockeycanada.ca/page/hc/hq/hockey-quebec-region-montreal/ahm-de-villeray/participant">
+        <Link style={{ textDecoration: 'none' }} href="https://https://page.spordle.com/fr/ahm-de-villeray/register">
             <Card >
 
               <CardActionArea>
