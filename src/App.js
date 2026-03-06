@@ -6,10 +6,11 @@ import NavTabs from './shared/NavTabs';
 import Box from '@mui/material/Box';
 //import { Route, Switch} from 'react-router-dom';
 import SwitchRoutes from './components/SwitchRoutes';
-import { createTheme, responsiveFontSizes ,ThemeProvider} from '@mui/material/styles';
+import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material/styles';
 import 'typeface-roboto';
 import Typography from '@mui/material/Typography';
 import Cookies from 'universal-cookie';
+import logoTornades from './shared/tornades.png';
 
 //import red from '@mui/material/colors/red';
 //import yellow from '@mui/material/colors/yellow';
@@ -17,11 +18,11 @@ import Cookies from 'universal-cookie';
 
 const theme = createTheme({
   palette: {
-    primary: { main:  '#e00024'}, 
-    secondary: { main: '#f5c71a' }, 
-    tertiary: { main: '#000000' }, 
-    error: { main: '#ff0000'},
-    success: { main: '#00ff00'},
+    primary: { main: '#e00024' },
+    secondary: { main: '#f5c71a' },
+    tertiary: { main: '#000000' },
+    error: { main: '#ff0000' },
+    success: { main: '#00ff00' },
   },
   typography: {
     fontFamily: [
@@ -42,43 +43,44 @@ const theme = createTheme({
 });
 
 theme.typography.h1 = {
-  fontFamily:'Lalezar',
+  fontFamily: 'Lalezar',
   fontSize: '3rem',
-  
+
   [theme.breakpoints.up('md')]: {
     fontSize: '4rem',
   },
   [theme.breakpoints.up('lg')]: {
-    fontSize: '5rem',  },
-  alignCenter:true,
-  noWrap:true
+    fontSize: '5rem',
+  },
+  alignCenter: true,
+  noWrap: true
 
 
 };
 
 theme.typography.h2 = {
-  fontFamily:'Dosis',
+  fontFamily: 'Dosis',
   fontSize: '1rem',
-  
+
   [theme.breakpoints.up('md')]: {
     fontSize: '1.5rem',
   },
   [theme.breakpoints.up('lg')]: {
     fontSize: '2rem',
   },
-  alignCenter:true,
-  noWrap:true
+  alignCenter: true,
+  noWrap: true
 
 
 };
 theme.typography.button = {
-  fontFamily:'Indie Flower',
-  fontWeight:'900',
-  fontSize:'1.5rem'
+  fontFamily: 'Indie Flower',
+  fontWeight: '900',
+  fontSize: '1.5rem'
 };
 
 
-  //theme = responsiveFontSizes(theme);
+//theme = responsiveFontSizes(theme);
 
 
 function App() {
@@ -90,12 +92,12 @@ function App() {
 
   let navRef = useRef(null);
 
-  let isMobile =size.height > size.width;
+  let isMobile = size.height > size.width;
 
 
   const handleWindowSizeChange = () => {
     setSize({ width: window.innerWidth, height: window.innerHeight });
-    isMobile = parseInt(size.height) > parseInt(size.width) ?true:false;
+    isMobile = parseInt(size.height) > parseInt(size.width) ? true : false;
   };
 
 
@@ -109,8 +111,8 @@ function App() {
 
   useLayoutEffect(() => {
 
-    setNavHeight(navRef? navRef.getBoundingClientRect().height :0);
-    setNavWidth(navRef? navRef.getBoundingClientRect().width :0);
+    setNavHeight(navRef ? navRef.getBoundingClientRect().height : 0);
+    setNavWidth(navRef ? navRef.getBoundingClientRect().width : 0);
     //mainStyle.marginLeft= isMobile ? 0 : size-navWidth/2;
 
 
@@ -119,16 +121,16 @@ function App() {
 
 
   const mainStyle = {
-    width:'100vw',
+    width: '100vw',
     display: 'flex',
     flexDirection: 'row',
-   // marginLeft: isMobile ? 0 : (size.width-navWidth)/2,
-   // backgroundColor:"#ffffff"
+    // marginLeft: isMobile ? 0 : (size.width-navWidth)/2,
+    // backgroundColor:"#ffffff"
   }
 
   const bgStyle = {
-    backgroundColor:"#fffafa",
-    width:'100%'
+    backgroundColor: "#fffafa",
+    width: '100%'
   }
 
 
@@ -140,55 +142,68 @@ function App() {
     textColor: isMobile ? '' : '#000000',
     bottom: isMobile ? 0 : '',
     width: '100%',
-    overflowX: 'auto', // Permet de scroller horizontalement si nécessaire
+    overflowX: 'auto',
     zIndex: 1,
   };
-  
 
-  
-const styleTitre= {
-height:isMobile?'3rem':'0',
-width:isMobile?'auto':'0',
-minWidth: 'max-content',
-overflowX:'auto',
-visibility:isMobile?'visible':'hidden',
-backgroundColor:isMobile?'#e00024':'#000000',
-color:'#000000',
-
-}
+  const headerWrapperStyle = {
+    position: 'relative'
+  };
 
 
-    return (
-      <div  className='App' style={bgStyle} >
-      
-        <Helmet title="Tornades AHMV" />
-        <ThemeProvider  theme={theme}>
-       {/*<Typography variant="h1" style={styleTitre}>Association du Hockey Mineur de Villeray</Typography>*/}
- 
-  <Box style={styleTitre}> <Typography variant="h2">Association de Hockey mineur de Villeray</Typography></Box>
+  const styleTitre = {
+    height: isMobile ? '3rem' : '3.5rem',
+    width: '100%',
+    overflow: 'hidden',
+    visibility: 'visible',
+    backgroundColor: '#e00024',
+    color: '#000000',
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
 
-       <div style={navStyle} ref={divElement => { navRef = divElement }}>
-         
-            <NavTabs   isMobile={isMobile} theme={theme} />
-          </div> 
-
-        
-  <Box style={{ width: '100%', overflowX: 'auto' }} component="span">
-    <SwitchRoutes
-      style={bgStyle}
-      isMobile={isMobile}
-      navHeight={navHeight}
-    >
-    </SwitchRoutes>
-</Box>
-       
-        </ThemeProvider>
-      </div>
-    );
   }
 
 
+  return (
+    <div className='App' style={bgStyle} >
 
-  export default App;
-  //          <Container style={mainStyle}  className="conteneur">
-  // </Container>
+      <Helmet title="Tornades AHMV" />
+      <ThemeProvider theme={theme}>
+        {/*<Typography variant="h1" style={styleTitre}>Association du Hockey Mineur de Villeray</Typography>*/}
+
+        <div className="header-red-wrapper" style={headerWrapperStyle}>
+          {!isMobile && <img src={logoTornades} className="logo-tornades" alt="Tornades logo" />}
+
+          <Box style={styleTitre}>
+            {isMobile && <img src={logoTornades} className="logo-tornades-mobile" alt="Tornades logo" />}
+            <Typography variant="h2" style={{ width: '100%', textAlign: 'center', padding: isMobile ? '0 3.2rem' : '0 4rem' }}>
+              Association de Hockey mineur de Villeray
+            </Typography>
+          </Box>
+
+          <div style={navStyle} ref={divElement => { navRef = divElement }}>
+            <NavTabs isMobile={isMobile} theme={theme} />
+          </div>
+        </div>
+
+        <Box style={{ width: '100%', overflowX: 'auto' }} component="span">
+          <SwitchRoutes
+            style={bgStyle}
+            isMobile={isMobile}
+            navHeight={navHeight}
+          >
+          </SwitchRoutes>
+        </Box>
+
+      </ThemeProvider>
+    </div>
+  );
+}
+
+
+
+export default App;
+//          <Container style={mainStyle}  className="conteneur">
+// </Container>

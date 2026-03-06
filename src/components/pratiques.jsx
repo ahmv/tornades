@@ -84,13 +84,17 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     padding: "1rem"
   },
+  containerMobile: {
+    paddingBottom: "calc(5rem + env(safe-area-inset-bottom))"
+  },
   table: {
     minWidth: 650
   }
 }));
 
-function Pratiques() {
+function Pratiques(props) {
   const classes = useStyles();
+  const { isMobile } = props;
   const { loading, pratiques, error } = useFetch();
   const selectRef = useRef(0);
   const [selEquipe, setSelEquipe] = useState(0);
@@ -120,7 +124,7 @@ function Pratiques() {
   if (error) return <div>{error}</div>;
 
   return (
-    <Container>
+    <Container className={isMobile ? classes.containerMobile : ""}>
       <Paper className={classes.paper}>
         <Typography variant="h2">Pratiques</Typography>
         <span>Choisir votre équipe:</span>
@@ -218,3 +222,4 @@ function Pratiques() {
 }
 
 export default Pratiques;
+

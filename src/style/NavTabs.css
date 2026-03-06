@@ -1,25 +1,21 @@
+.nav-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .nav-container {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-left: 80px;
-    }
+.nav-container-mobile {
+    justify-content: flex-start;
+    padding-left: 0;
+}
 
-    .nav-logo {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        height: 50px;
-    }
+.mobile-tabs {
+    width: 100%;
+}
 
-    .mobileTab {
+.mobileTab {
+}
 
-    }
-    .tab {
-
-
-
-    }
+.tab {
+}
