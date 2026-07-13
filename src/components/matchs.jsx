@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { chargerJson, normaliserListe } from '../shared/chargerJson';
 
 const NavTabsWidth = 100;
 
@@ -17,11 +18,7 @@ const useFetch = () => {
   const [loading, setLoading] = useState(true);
 
   async function fetchData() {
-    const response = await fetch("/api/equipes");
-    let json = await response.json();
-    json = Array.isArray(json) ? json : Object.values(json);
-    // Remove any null/undefined entries before setting state
-    json = json.filter(Boolean);
+    const json = normaliserListe(await chargerJson("/api/equipes", {}, []));
     setData(json);
     setLoading(false);
   }

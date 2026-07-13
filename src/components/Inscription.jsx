@@ -125,11 +125,50 @@ function Inscription(props) {
     textAlign: 'center',
     }
 
+    const titrePrix = {
+      textAlign: 'center',
+      marginTop: 0,
+      marginBottom: '0.5rem',
+    }
+
     const logoTH = {
       backgroundSize:'contain',
       height:'10rem',
       width: '100%',
     }
+
+  const prixMixte = [
+    { categorie: 'Timbits M7', prix: '195$', annees: '2020-2021-2022-2023' },
+    { categorie: 'M9', prix: '380$', annees: '2018-2019' },
+    { categorie: 'M11', prix: '450$', annees: '2016-2017' },
+    { categorie: 'M13', prix: '475$', annees: '2014-2015' },
+    { categorie: 'M15', prix: '495$', annees: '2012-2013' },
+    { categorie: 'M17', prix: '525$', annees: '2010-2011' },
+    { categorie: 'M19', prix: '560$', annees: '2008-2009' },
+    { categorie: 'Junior', prix: '590$', annees: '2005-2006-2007' },
+  ];
+
+  const prixFeminin = [
+    { categorie: 'M7', prix: '195$', annees: '2020-2021-2022-2023' },
+    { categorie: 'M9', prix: '380$', annees: '2018-2019' },
+    { categorie: 'M12', prix: '450$', annees: '2015-2016-2017' },
+    { categorie: 'M15', prix: '495$', annees: '2012-2013-2014' },
+    { categorie: 'M18', prix: '540$', annees: '2009-2010-2011' },
+    { categorie: 'Junior', prix: '590$', annees: '2005-2006-2007-2008' },
+  ];
+
+  const listePrix = (prix) => (
+    <List dense>
+      {prix.map((item) => (
+        <ListItem key={item.categorie}>
+          <ListItemText
+            primary={`${item.categorie} : ${item.prix}`}
+            secondary={item.annees}
+          />
+        </ListItem>
+      ))}
+    </List>
+  );
 
   function changeLangue(lang) {
     var cookie = new Cookies();
@@ -144,7 +183,7 @@ return (
       <Grid container spacing={8}>
         <Grid container item xs={12} spacing={2}>
         <Grid item xs={12} >
-        <h4>  Les inscriptions 2025-2026 sont ouvertes! </h4>
+        <h4>  Les inscriptions 2026-2027 sont ouvertes! </h4>
         <Link style={{ textDecoration: 'none' }} href="https://page.spordle.com/fr/ahm-de-villeray/register">
             <Card >
 
@@ -275,46 +314,16 @@ return (
               <CardActionArea>
 
                 <CardContent>
-                  <List dense>
-
-
-                    <ListItem>
-                      <ListItemText
-                        primary="Timbits M7: 190$" secondary="2019-2020-2021-2022"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary="M9 : 380$" secondary="2017-2018"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary="M11 : 450$" secondary="2015-2016"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary="M13 : 450$" secondary="2013-2014"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary="M15 : 475$" secondary="2011-2012"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary="M18 : 525$" secondary="2008-2009-2010"
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText
-                        primary="Junior: 590$" secondary="2004-2005-2006-2007"
-                      />
-                    </ListItem>
-
-                  </List>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <h5 style={titrePrix}>Mixte</h5>
+                      {listePrix(prixMixte)}
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <h5 style={titrePrix}>Féminin</h5>
+                      {listePrix(prixFeminin)}
+                    </Grid>
+                  </Grid>
 
                 </CardContent>
               </CardActionArea>

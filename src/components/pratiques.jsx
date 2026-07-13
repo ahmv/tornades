@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { sortTeams } from "../shared/teamUtils";
+import { chargerJson } from "../shared/chargerJson";
 
 const joursSemaine = [
   "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
@@ -41,19 +42,19 @@ const useFetch = () => {
           }
         `;
 
-        const response = await fetch("/graphql", {
+        const json = await chargerJson("/graphql", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ query })
-        });
+        }, null);
 
-        const json = await response.json();
-
-        if (json.errors) {
+        if (!json) {
+          setError("Impossible de charger les donnees");
+        } else if (json.errors) {
           console.error(json.errors);
           setError("Erreur lors du chargement des données");
         } else {
-          setPratiques(json.data.pratiques || []);
+          setPratiques(json.data?.pratiques || []);
         }
       } catch (err) {
         console.error(err);

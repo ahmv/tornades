@@ -15,6 +15,7 @@ import 'typeface-dosis';
 //import { MarkdownPreview } from 'react-marked-markdown'
 import parse from "html-react-parser";
 import {marked} from 'marked';
+import { chargerJson, normaliserListe } from '../shared/chargerJson';
 
 const NavTabsWidth = 100;
 
@@ -24,12 +25,7 @@ const useFetch = url => {
   const [loading, setLoading] = useState(true);
 
   async function fetchData() {
-    const response = await fetch(url);
-    let json = await response.json();
-    // Normalize JSON to an array before sorting
-    json = Array.isArray(json) ? json : Object.values(json);
-    // Filter out null/undefined entries then safely sort by creation date
-    json = json.filter(Boolean);
+    let json = normaliserListe(await chargerJson(url, {}, []));
     json.sort((a, b) => (b?.created_at || '').localeCompare(a?.created_at || ''));
     setData(json);
     setLoading(false)  }

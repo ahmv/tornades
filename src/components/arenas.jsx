@@ -10,17 +10,14 @@ import { Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Icon from '@mui/material/Icon';
 import LocationIcon from '@mui/icons-material/LocationOn';
+import { chargerJson, normaliserListe } from '../shared/chargerJson';
 
 const useFetch = url => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   async function fetchData() {
-    const response = await fetch(url);
-    let json = await response.json();
-    json = Array.isArray(json) ? json : Object.values(json);
-    // Remove any null or undefined entries to avoid runtime errors
-    json = json.filter(Boolean);
+    const json = normaliserListe(await chargerJson(url, {}, []));
     setData(json);
     setLoading(false);
   }

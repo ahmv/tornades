@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import 'typeface-dosis';
 import { useCookies } from "react-cookie";
+import { chargerJson, normaliserListe } from '../shared/chargerJson';
 const NavTabsWidth = 100;
 
 
@@ -50,8 +51,7 @@ axios
 
 
     async function fetchDataEquipes() {
-      const response = await fetch("/equipes");
-      const json = await response.json();
+      const json = normaliserListe(await chargerJson("/equipes", {}, []));
       setEquipes(json);
       setLoadingE(false);  
     }

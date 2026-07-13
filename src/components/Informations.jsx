@@ -9,6 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import { chargerJson, normaliserListe } from '../shared/chargerJson';
 const NavTabsWidth = 100;
 
 function Informations() {
@@ -30,8 +31,7 @@ function Informations() {
       const [loading, setLoading] = useState(true);
     
       async function fetchData() {
-        const response = await fetch(url);
-        const json = await response.json();
+        const json = normaliserListe(await chargerJson(url, {}, []));
         setData(json);
         setLoading(false)  }
     
